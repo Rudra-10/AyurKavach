@@ -15,7 +15,7 @@ export default function Home() {
   const [jurisdiction, setJurisdiction] = useState<Jurisdiction>("both");
   const [language, setLanguage] = useState<Language>("en");
   const [turns, setTurns] = useState<ChatTurn[]>([]);
-  const [activeCitations, setActiveCitations] = useState<Citation[]>([]);
+  const [selectedTurnId, setSelectedTurnId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isMobileLedgerOpen, setIsMobileLedgerOpen] = useState<boolean>(false);
 
@@ -25,6 +25,10 @@ export default function Home() {
   useEffect(() => {
     chatBottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [turns]);
+
+  // Derive active citations based on selected turn, defaulting to latest turn
+  const activeTurn = turns.find((t) => t.id === selectedTurnId) || turns[turns.length - 1];
+  const activeCitations: Citation[] = activeTurn?.response?.citations || [];
 
   const handleSendQuery = async (
     questionText: string,
@@ -42,6 +46,7 @@ export default function Home() {
     };
 
     setTurns((prev) => [...prev, newTurn]);
+    setSelectedTurnId(turnId);
     setIsLoading(true);
 
     await streamQuery(
@@ -68,7 +73,6 @@ export default function Home() {
                 : t
             )
           );
-          setActiveCitations(response.citations || []);
           setIsLoading(false);
         },
         onError: (err) => {
@@ -89,17 +93,19 @@ export default function Home() {
     );
   };
 
-  const handleFootnoteClick = (citationId: number) => {
+  const handleFootnoteClick = (citationId: number, turnId: string) => {
+    setSelectedTurnId(turnId);
     setIsMobileLedgerOpen(true);
     setTimeout(() => {
       const element = document.getElementById(`ledger-entry-${citationId}`);
       if (element) {
         element.scrollIntoView({ behavior: "smooth", block: "center" });
         element.classList.remove("flash-highlight");
+        // Trigger reflow to restart CSS keyframe animation
         void element.offsetWidth;
         element.classList.add("flash-highlight");
       }
-    }, 100);
+    }, 150);
   };
 
   return (
@@ -147,6 +153,8 @@ export default function Home() {
               <div className="mx-auto max-w-3xl">
                 <ChatWindow
                   turns={turns}
+                  selectedTurnId={selectedTurnId}
+                  onSelectTurn={setSelectedTurnId}
                   onFootnoteClick={handleFootnoteClick}
                 />
                 <div ref={chatBottomRef} />
