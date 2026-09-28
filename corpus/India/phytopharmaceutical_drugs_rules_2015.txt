@@ -1,0 +1,11 @@
+# Phytopharmaceutical Drugs (Drugs and Cosmetics Rules, Gazette Notification G.S.R. 918(E), 2015)
+
+## Rule 2(eb)
+"Phytopharmaceutical drug" means a purified and standardized fraction with defined minimum four marker compounds (where available) of an extract of a medicinal plant or its part, for internal or external use of human beings or animals for diagnosis, treatment, mitigation or prevention of any disease or disorder, but does not include administration by parenteral route.
+
+## Schedule Y (Appendix I-B)
+Regulatory Requirements for Phytopharmaceutical Drugs:
+A phytopharmaceutical drug requires comprehensive scientific evidence including published literature on traditional use, chemical profiling, minimum 4 bio-marker fingerprinting, pharmacological evaluation, toxicological safety studies, and human clinical trials under CDSCO approval before receiving market authorization.
+
+## IP and Patentability Posture
+Unlike classical Ayurvedic medicines, a novel, standardized, purified fraction exhibiting unexpected bio-availability or synergistic efficacy with defined chromatographic fingerprints can qualify for patent protection under the Patents Act, 1970, provided it satisfies inventive step criteria and demonstrates enhanced therapeutic efficacy under Section 3(d). Prior NBA approval under Section 6 of Biological Diversity Act is mandatory for filing patents based on Indian biological resources.

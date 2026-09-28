@@ -1,0 +1,13 @@
+# Patents (Amendment) Rules, 2024
+
+## Rule 12(1)
+Statement and Undertaking regarding Foreign Applications:
+The time period for filing Form 3 (updating details of corresponding foreign patent filings) has been streamlined. Patent applicants now have an obligation to notify the Controller of corresponding foreign filing status within 3 months from the issuance of the First Examination Report (FER).
+
+## Rule 29A
+Grace Period Provisions:
+A formal procedure for availing a 12-month grace period has been incorporated under Form 31 for disclosures made before filing if the invention was exhibited or published without the inventor's consent.
+
+## Rule 131(2)
+Working of Patents (Form 27):
+Form 27 (statement regarding the working of a patented invention on a commercial scale in India) is now required once every three financial years instead of annually, reducing administrative burden for pharmaceutical and biotech patent holders.

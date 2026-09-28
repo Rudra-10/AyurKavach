@@ -50,6 +50,26 @@ A web app where a user asks a natural-language question about Ayurveda IP/regula
 - [ ] Curated corpus (see Section 8)
 - [ ] Loading, empty and error states
 - [ ] Live deploy: Vercel (frontend) + hosted backend
+- [ ] Formulation Classification flow: guided clarifying questions that determine one of six categories —
+      classical/generic medicine, patent/proprietary medicine, new/non-classical drug,
+      phytopharmaceutical, Ayurveda-Aahar/nutraceutical, or cosmetic — then states that
+      category's IP and ABS posture, with citations
+- [ ] Formulation Profile: the classification result persists (session state) and is passed
+      into every later /query call so chat answers are pre-scoped to it
+- [ ] ABS-compliance helper: rule-based decision tree off the Formulation Profile answering
+      "do I need NBA approval, and which form applies"
+- [ ] TKDL / prior-art pointer: for classical-category formulations, surface curated
+      prior-art matches (turmeric, neem, etc.) as a defensive-publication pointer
+- [ ] Safe abstention: explicit decline (not a guess) on out-of-scope queries; test against
+      a small out-of-scope question set as part of acceptance criteria
+- [ ] Escalate-to-human-facilitator CTA, shown when confidence is low or query is out of scope
+- [ ] Bhashini integration attempt for the Hindi toggle, with automatic fallback to the
+      current LLM-native Hindi generation if the Bhashini API call fails
+- [ ] Homepage + tab navigation: Home / Product Assessment / Ask IP-SAKTI / Knowledge Sources / About
+      (replace single-screen chat entry point)
+- [ ] Knowledge Sources page: renders corpus metadata.csv as a browsable table
+- [ ] One-line DPDP-alignment note in the About/footer: no personal or formulation data
+      retained beyond the session
 
 ### SIMPLIFIED FOR MVP
 - Confidence gate: threshold-based, not an NLI model
@@ -65,16 +85,25 @@ A web app where a user asks a natural-language question about Ayurveda IP/regula
 - Live NBA / IP India API integration
 - Voice interface
 - Full corpus of all AYUSH-relevant statutes and treaties
+- Relational knowledge graph + agentic multi-source orchestration
+- Paid-source connectors with logged user permission
+- Full multilingual + voice beyond English/Hindi
+- Live registry integration (InPASS, GI Registry, trademark search)
+- Cost Estimator (not required by the PS — optional stretch only if everything above is done)
 
 ---
 
 ## 4. X-Factor / USP
 
-**Primary: Cross-Regime Conflict & Gap Synthesizer.** Most assistants answer Indian OR international law separately. IP-SAKTI Sahayak cross-references both and surfaces specific compliance gaps (e.g. NBA approval under the Biological Diversity Act vs. disclosure duties under WIPO GRATK / Nagoya Protocol when filing abroad).
+Primary USP: The Formulation Profile — one classification, threaded everywhere.
+Competing tools make the user re-describe their product in every separate tool. IP-SAKTI
+Sahayak classifies the formulation once via guided questions, stores it as a Formulation
+Profile, and every later answer — chat, ABS check, prior-art pointer — is automatically
+scoped to it, cross-referenced across India/international regimes, conflicts flagged,
+every claim cited.
 
-**Secondary: Verifiable Citation Trace.** Every claim maps to a retrieved chunk, shown as a footnote linked to a source ledger, plus a confidence indicator. When grounding is weak the system says so instead of guessing.
-
-Pitch line: *"Not just a citation bot — a compliance-gap detector with a built-in lie detector."*
+Supporting features: Cross-Regime Conflict Synthesizer, Verifiable Citation Trace,
+Confidence indicator, Safe abstention on out-of-scope queries.
 
 ---
 
@@ -185,6 +214,15 @@ GET /health -> {"status": "ok"}
 
 Citation `id`s are stable per response and start at 1. The frontend must dedupe and never render the same source twice in the ledger.
 
+
+POST /classify
+Request:  { "answers": { ...guided question responses... }, "profile_id": "string | null" }
+Response: { "profile_id": "string",
+            "category": "classical" | "proprietary" | "new_drug" | "phytopharmaceutical" | "ayurveda_aahar" | "cosmetic",
+            "ip_posture_summary": "string with citations",
+            "next_questions": [ ... ] }   // present if more clarification is needed
+
+# /query now also accepts an optional "profile_id" to scope answers to a classified product
 ---
 
 ## 7. UI Requirements
@@ -222,6 +260,12 @@ Citation `id`s are stable per response and start at 1. The frontend must dedupe 
 
 Every file must be tagged in `corpus/metadata.csv`. Preserve section numbers as literal headings so the chunker can split on them.
 
+Additional (breadth only, 1-2 key sections each — don't deep-chunk unless a demo
+question needs it): Patents (Amendment) Rules 2024, Biological Diversity (Amendment)
+Act 2023 + Rules 2024, Designs Act 2000, Copyright Act 1957 (relevant sections),
+Protection of Plant Varieties and Farmers' Rights Act 2001, Drugs and Magic Remedies
+(Objectionable Advertisements) Act 1954, FSSAI Ayurveda-Aahar regulations,
+WIPO GRATK Treaty 2024 (already listed), Madrid Protocol (summary), Budapest Treaty (summary)
 ---
 
 ## 9. Day-by-Day Milestones
@@ -259,3 +303,10 @@ Every file must be tagged in `corpus/metadata.csv`. Preserve section numbers as 
 - English/Hindi only
 - Threshold-based confidence, not entailment verification
 - Guidance tool, not a substitute for a registered patent agent
+
+## 13. Site Structure
+Home — hero, "Start Assessment" / "Ask IP-SAKTI" CTAs, how-it-works
+Product Assessment — the classification flow, outputs the Formulation Profile
+Ask IP-SAKTI — existing chat UI, now profile-aware
+Knowledge Sources — corpus table from metadata.csv
+About — disclaimer, DPDP note, staged-roadmap statement

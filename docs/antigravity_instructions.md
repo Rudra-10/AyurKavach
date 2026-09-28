@@ -53,6 +53,16 @@ Implement `generation/`:
 Wire everything into `/query` with SSE streaming (`token` events then `final`).
 Verify: run all demo questions end to end; manually confirm each cited section supports its claim. Show me the outputs.
 
+## Phase 3.5 — Formulation Classification & Profile
+Implement `/classify`: a short guided question flow (3-6 questions) that determines the
+formulation category per plan.md Section 3, using retrieval + generation exactly like
+/query (never hardcode the category logic — ground it in the ingested statute text for
+the category's IP/ABS posture). Persist the result as a Formulation Profile (id, category,
+answers, posture summary). Update /query to accept an optional profile_id and inject the
+profile into the prompt so answers are pre-scoped to the product's category.
+Verify: classify a test formulation, then ask a follow-up chat question without restating
+the product — confirm the answer reflects the correct category.
+
 ## Phase 4 — Frontend integration
 Replace mocks with the real API using `lib/api.ts` (SSE client) and `lib/types.ts`. Implement the requirements in plan.md Section 7:
 - Footnote-style citations in `AnswerBlock`, dedupe via `lib/citations.ts`, Source Ledger as compact rows with jurisdiction color bar and expandable snippet.
@@ -64,12 +74,27 @@ Replace mocks with the real API using `lib/api.ts` (SSE client) and `lib/types.t
 - Loading, empty and error states; mobile bottom-sheet ledger.
 Verify: run the frontend against the real backend on all demo questions; check the ledger never shows duplicates; check mobile width.
 
+Also build: Home page with nav tabs (Home / Product Assessment / Ask IP-SAKTI /
+Knowledge Sources / About), the Product Assessment form + result view wired to
+/classify, the Knowledge Sources table reading metadata.csv, and a Bhashini call for
+the Hindi toggle — attempt the real Bhashini API first; on failure, fall back silently
+to the existing LLM-native Hindi generation. Log which path was used for demo debugging.
+
 ## Phase 5 — Hardening and deploy
 - Add caching for the demo questions in `backend/cache.py`.
 - Add request timeouts, retries for hosted APIs, and friendly error messages.
 - Deploy the backend (Railway/Render) and frontend (Vercel); set `NEXT_PUBLIC_API_URL`.
 - Run `eval_demo_questions.py` against production and confirm plan.md Section 11 acceptance criteria.
 Verify: give me a checklist with pass/fail for each acceptance criterion and the measured time-to-first-token.
+
+## Phase 5.5 — Evaluation & Safe Abstention
+Build a small eval script that runs: (a) the demo questions, checking citation
+correctness, (b) a set of 5-8 out-of-scope questions (e.g. unrelated topics, or
+Ayurveda questions with no IP/regulatory angle) confirming the assistant abstains
+instead of guessing, (c) one Hindi question confirming Bhashini or fallback produces
+a coherent, correctly-cited answer. Report pass/fail per case — this directly maps to
+the PS's stated evaluation criteria (accuracy, citation correctness, safe abstention,
+multilingual quality).
 
 ---
 

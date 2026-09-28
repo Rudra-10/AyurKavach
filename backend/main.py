@@ -1,6 +1,7 @@
 """
 FastAPI application entry point.
-Implements the linear RAG pipeline: retrieve -> rerank -> generate -> SSE streaming.
+Implements the linear RAG pipeline: retrieve -> rerank -> generate -> SSE streaming,
+plus the Formulation Classification and Profile scoping engine.
 Strictly adheres to plan.md Section 6 API contract.
 """
 import json
@@ -17,12 +18,16 @@ from models.schemas import (
     QueryResponse,
     Citation,
     HealthResponse,
-    StreamTokenEvent
+    StreamTokenEvent,
+    ClassifyRequest,
+    ClassifyResponse
 )
 from retrieval.retriever import HybridRetriever
 from retrieval.reranker import CrossEncoderReranker
 from generation.confidence import compute_confidence
 from generation.llm_client import LLMClient
+from classification import classify_formulation
+from profiles import get_profile
 from cache import get_cached_response, set_cached_response
 
 app = FastAPI(
@@ -51,24 +56,46 @@ async def health_check():
     return {"status": "ok"}
 
 
+@app.post("/classify", response_model=ClassifyResponse)
+async def classify_endpoint(request: ClassifyRequest):
+    """
+    Formulation classification endpoint.
+    Determines statutory category (Classical, Proprietary, New Drug, Phytopharmaceutical,
+    Ayurveda-Aahar, Cosmetic), returns IP/ABS posture with citations, and persists Formulation Profile.
+    """
+    try:
+        response = await classify_formulation(request, retriever, reranker)
+        return response
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Classification failed: {str(e)}")
+
+
 async def sse_pipeline_generator(request: QueryRequest) -> AsyncGenerator[str, None]:
     """
     Linear RAG pipeline execution:
-    1. Retrieve candidates (top-15) via dense + sparse search + RRF + jurisdiction filter
-    2. Rerank to top-5 using CrossEncoder
-    3. Compute confidence score
-    4. Generate grounded structured response via LLMClient
-    5. Stream tokens via SSE then yield final payload
+    1. Retrieve profile data if profile_id provided
+    2. Retrieve candidates (top-15) via dense + sparse search + RRF + jurisdiction filter
+    3. Rerank to top-5 using CrossEncoder
+    4. Compute confidence score
+    5. Generate grounded structured response via LLMClient (with profile context injected)
+    6. Stream tokens via SSE then yield final payload
     """
-    cache_key = f"{request.question.strip().lower()}__jur_{request.jurisdiction}__lang_{request.lang}"
+    profile_data = get_profile(request.profile_id) if request.profile_id else None
+    cache_key = f"{request.question.strip().lower()}__jur_{request.jurisdiction}__lang_{request.lang}__prof_{request.profile_id or 'none'}"
     cached_data = get_cached_response(cache_key)
 
     if cached_data:
         final_response = QueryResponse(**cached_data)
     else:
         # Step 1: Retrieval (Top-15)
+        # If query is profile-scoped, enrich retrieval query with category keywords
+        retrieval_query = request.question
+        if profile_data:
+            cat_name = profile_data.get("category_name", "")
+            retrieval_query = f"{request.question} {cat_name}"
+
         candidates = await retriever.retrieve(
-            query=request.question,
+            query=retrieval_query,
             jurisdiction=request.jurisdiction,
             top_k=15
         )
@@ -85,13 +112,14 @@ async def sse_pipeline_generator(request: QueryRequest) -> AsyncGenerator[str, N
         # Step 3: Confidence computation
         confidence_level = compute_confidence(top_score, top_chunks)
 
-        # Step 4: LLM Generation
+        # Step 4: LLM Generation (with profile context)
         final_response = await llm_client.generate_response(
             question=request.question,
             retrieved_chunks=top_chunks,
             jurisdiction=request.jurisdiction,
             lang=request.lang,
-            confidence_level=confidence_level
+            confidence_level=confidence_level,
+            profile_data=profile_data
         )
 
         # Cache response
@@ -114,6 +142,7 @@ async def sse_pipeline_generator(request: QueryRequest) -> AsyncGenerator[str, N
 async def query_endpoint(request: QueryRequest):
     """
     Query endpoint streaming Server-Sent Events (SSE).
+    Accepts optional profile_id to scope answers to a classified product.
     """
     return StreamingResponse(
         sse_pipeline_generator(request),
