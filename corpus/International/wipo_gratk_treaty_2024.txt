@@ -1,0 +1,21 @@
+# WIPO Treaty on Intellectual Property, Genetic Resources and Associated Traditional Knowledge (2024)
+
+## Article 3.1
+Mandatory Disclosure Requirement for Genetic Resources:
+Where the claimed invention in a patent application is based on genetic resources, each Contracting Party shall require applicants to disclose the country of origin of the genetic resources, or, if the country of origin is not known to the applicant, the source of the genetic resources.
+
+## Article 3.2
+Mandatory Disclosure Requirement for Associated Traditional Knowledge:
+Where the claimed invention in a patent application is based on traditional knowledge associated with genetic resources, each Contracting Party shall require applicants to disclose the indigenous people or local community that provided the traditional knowledge, or, if the indigenous people or local community is not known to the applicant, the source of the traditional knowledge.
+
+## Article 3.3
+Declaration of Lack of Knowledge:
+Where the applicant does not know the information required under paragraph 1 or 2, the applicant shall make a declaration that the applicant does not possess the relevant information.
+
+## Article 4
+Non-Retroactivity and Exceptions:
+The mandatory disclosure obligations established under Article 3 shall not apply to patent applications filed prior to the entry into force of this Treaty for the Contracting Party concerned.
+
+## Article 5
+Information Systems and Databases:
+Contracting Parties may establish and maintain information systems (such as databases) of genetic resources and associated traditional knowledge, in consultation with indigenous peoples, local communities and other stakeholders. Access to such databases may be provided to patent offices for the purpose of prior art search and examination to prevent wrongful patents.

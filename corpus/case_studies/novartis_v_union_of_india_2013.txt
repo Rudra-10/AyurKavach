@@ -1,0 +1,10 @@
+# Case Study: Novartis AG v. Union of India & Others (2013)
+
+## Section 1: Factual Background and Patent Application
+Novartis AG filed an Indian patent application for the beta crystalline form of Imatinib Mesylate (Glivec), a cancer drug, claiming improved bioavailability (approx. 30%) and thermodynamic stability over the free base imatinib known in prior art.
+
+## Section 2: Supreme Court Interpretation of Section 3(d)
+The Supreme Court of India held that Section 3(d) of the Patents Act, 1970 was specifically enacted to prevent "evergreening" of pharmaceutical patents. The Court established that in the case of medicines, "efficacy" under Section 3(d) strictly means "therapeutic efficacy" — that is, the ability to heal or produce a desired therapeutic effect on the human body. Improved thermodynamic stability, flow properties, or enhanced bioavailability without a demonstrated increase in therapeutic curative efficacy does not satisfy Section 3(d).
+
+## Section 3: Relevance to Ayurvedic and Herbal Formulations
+The landmark precedent in Novartis v. Union of India sets the bar for patenting derivatives, extracts, or modified formulations of known Ayurvedic substances: applicants must demonstrate a significant, measurable enhancement in therapeutic efficacy over the known traditional substance rather than incremental physical advantages.

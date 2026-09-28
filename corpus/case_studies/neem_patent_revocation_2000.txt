@@ -1,0 +1,10 @@
+# Case Study: Neem Patent Revocation (EP 0436257)
+
+## Section 1: European Patent Grant
+In 1994, the European Patent Office (EPO) granted European Patent EP 0436257 to W.R. Grace & Co. and the United States Department of Agriculture (USDA) for a "Method for controlling fungi on plants using an extracted neem oil containing azadirachtin".
+
+## Section 2: Opposition by India and Civil Society
+In 1995, a legal opposition was filed at the EPO by Dr. Vandana Shiva (Research Foundation for Science, Technology and Ecology), the Green Group in the European Parliament, and the International Federation of Organic Agriculture Movements (IFOAM). The opponents submitted evidence that the fungicidal and insecticidal properties of hydrophobic neem extracts had been traditionally known, extracted, and used across rural India for generations as part of Ayurvedic agriculture and pest control.
+
+## Section 3: Revocation Decision by EPO
+In May 2000, the EPO Opposition Division revoked the patent in its entirety under Articles 54 (Novelty) and 56 (Inventive Step) of the European Patent Convention (EPC), confirmed on appeal in 2005. The ruling reaffirmed that traditional knowledge documented and practiced in developing nations constitutes valid novelty-destroying prior art.

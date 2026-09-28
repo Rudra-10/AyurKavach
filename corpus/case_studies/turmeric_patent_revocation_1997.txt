@@ -1,0 +1,10 @@
+# Case Study: Turmeric Patent Revocation (US Patent 5,401,504)
+
+## Section 1: Background and Granted Claims
+In March 1995, the United States Patent and Trademark Office (USPTO) granted US Patent No. 5,401,504 to the University of Mississippi Medical Center for the "Use of Turmeric in Wound Healing". The patent claimed the administration of an effective amount of turmeric (Curcuma longa) powder to promote wound healing in a patient.
+
+## Section 2: Legal Challenge by CSIR India
+In 1996, the Council of Scientific & Industrial Research (CSIR), India, filed a formal re-examination petition challenging the patent on the grounds of lack of novelty and non-obviousness under 35 U.S.C. 102 and 103. CSIR submitted 32 documentary references, including ancient Sanskrit texts, the Ayurvedic Compendium (Bhavaprakasha), and published papers from the Indian Journal of Medical Research demonstrating that the wound-healing properties of turmeric had been documented and practiced in India for centuries.
+
+## Section 3: Legal Outcome and Precedent
+In August 1997, the USPTO revoked and cancelled all claims of US Patent 5,401,504, establishing that the medicinal properties of turmeric constituted prior art in public knowledge. This landmark victory directly prompted the Indian Government to establish the Traditional Knowledge Digital Library (TKDL) in 2001 to prevent biopiracy and wrongful patenting of traditional Indian medicine globally.

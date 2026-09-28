@@ -1,0 +1,13 @@
+# WIPO Patent Cooperation Treaty (PCT) Guidelines
+
+## Section 1
+Overview of Traditional Knowledge Examination:
+International Searching Authorities (ISAs) and International Preliminary Examining Authorities (IPEAs) under the Patent Cooperation Treaty (PCT) conduct prior art searches against non-patent literature databases, including traditional knowledge digital libraries.
+
+## Section 2
+PCT Rule 34 Minimum Documentation:
+Rule 34 of the PCT Regulations specifies the minimum documentation that must be consulted during international search. The inclusion of traditional knowledge documentation (such as India's TKDL) in PCT minimum documentation ensures that patent examiners worldwide identify prior art in Ayurvedic and traditional medicine before granting claims.
+
+## Section 3
+Inventive Step and Novelty Standards:
+Under PCT Article 33, a claimed invention is considered novel if it is not anticipated by the prior art, and involves an inventive step (non-obviousness) if, having regard to the prior art, it is not obvious to a person skilled in the art. Mere extraction, routine solvent isolation, or known therapeutic uses documented in ancient or traditional texts fail the non-obviousness criterion.

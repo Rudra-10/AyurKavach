@@ -1,1 +1,14 @@
-document_name,jurisdiction,year,source_url
+document_name,jurisdiction,year,source_url,file_path
+Patents Act, 1970,india,1970,https://ipindia.gov.in/patents.htm,corpus/india/patents_act_1970.txt
+Biological Diversity Act, 2002,india,2002,https://nbaindia.org/act/,corpus/india/biological_diversity_act_2002.txt
+Drugs and Cosmetics Act, 1940,india,1940,https://cdsco.gov.in/opencms/opencms/en/Drugs/Ayurveda-Siddha-Unani/,corpus/india/drugs_and_cosmetics_act_1940.txt
+Geographical Indications of Goods Act, 1999,india,1999,https://ipindia.gov.in/gi.htm,corpus/india/geographical_indications_act_1999.txt
+Trade Marks Act, 1999,india,1999,https://ipindia.gov.in/trade-marks.htm,corpus/india/trade_marks_act_1999.txt
+TRIPS Agreement (WTO),international,1994,https://www.wto.org/english/docs_e/legal_e/27-trips_04_e.htm,corpus/international/trips_agreement_1994.txt
+Nagoya Protocol on ABS,international,2010,https://www.cbd.int/abs/text/,corpus/international/nagoya_protocol_2010.txt
+Convention on Biological Diversity (CBD),international,1992,https://www.cbd.int/convention/text/,corpus/international/cbd_convention_1992.txt
+WIPO PCT Guidelines,international,2020,https://www.wipo.int/pct/en/texts/,corpus/international/wipo_pct_overview.txt
+WIPO GRATK Treaty (2024),international,2024,https://www.wipo.int/meetings/en/doc_details.jsp?doc_id=634599,corpus/international/wipo_gratk_treaty_2024.txt
+Case Study: Turmeric Patent Revocation,international,1997,https://www.csir.res.in/tkdl,corpus/case_studies/turmeric_patent_revocation_1997.txt
+Case Study: Neem Patent Revocation,international,2000,https://www.epo.org/,corpus/case_studies/neem_patent_revocation_2000.txt
+Case Study: Novartis v. Union of India,india,2013,https://main.sci.gov.in/judgment/judis/40212.pdf,corpus/case_studies/novartis_v_union_of_india_2013.txt

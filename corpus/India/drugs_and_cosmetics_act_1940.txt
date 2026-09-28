@@ -1,0 +1,28 @@
+# Drugs and Cosmetics Act, 1940
+
+## Section 3(a)
+"Ayurvedic, Siddha or Unani drug" includes all medicines intended for internal or external use for or in the diagnosis, treatment, mitigation or prevention of disease or disorder in human beings or animals, and manufactured exclusively in accordance with the formulae described in the authoritative books of Ayurvedic, Siddha and Unani Tibb systems of medicine, specified in the First Schedule.
+
+## Section 3(h)
+"patent or proprietary medicine" means,—
+(i) in relation to Ayurvedic, Siddha or Unani Tibb systems of medicine, all formulations containing only such ingredients mentioned in the formulae described in the authoritative books of Ayurveda, Siddha or Unani Tibb systems of medicine specified in the First Schedule, but does not include a medicine which is administered by parenteral route and also a formulation which is sold under a name specified in the authoritative books;
+(ii) in relation to any other system of medicine, a drug which is a remedy or prescription presented in a form ready for internal or external administration of human beings or animals and which is not included in the edition of the Indian Pharmacopoeia for the time being or any other Pharmacopoeia authorized in this behalf by the Central Government.
+
+## Section 33A
+Application of Chapter IVA: This Chapter shall apply only to Ayurvedic, Siddha and Unani drugs.
+
+## Section 33C
+Ayurvedic, Siddha and Unani Drugs Technical Advisory Board: The Central Government shall constitute a Board to advise the Central Government and the State Governments on technical matters arising out of the administration of this Act relating to Ayurvedic, Siddha and Unani drugs.
+
+## Section 33D
+Ayurvedic, Siddha and Unani Drugs Consultative Committee: The Central Government may constitute a Committee to advise the Central Government, the State Governments and the Ayurvedic, Siddha and Unani Drugs Technical Advisory Board on any matter tending to secure uniformity throughout India in the administration of this Act in so far as it relates to Ayurvedic, Siddha or Unani drugs.
+
+## Section 33E
+Misbranded drugs: For the purposes of this Chapter, an Ayurvedic, Siddha or Unani drug shall be deemed to be misbranded if it is so colored, coated, powdered or polished that damage is concealed, or if it is made to appear of better or greater therapeutic value than it really is, or if it is not labeled in the prescribed manner.
+
+## Section 33EE
+Adulterated drugs: For the purposes of this Chapter, an Ayurvedic, Siddha or Unani drug shall be deemed to be adulterated if it consists, in whole or in part, of any filthy, putrid or decomposed substance, or if it has been prepared, packed or held under insanitary conditions.
+
+## Schedule T (Good Manufacturing Practices)
+Good Manufacturing Practices (GMP) for Ayurvedic, Siddha and Unani Medicines:
+The factory premises shall comply with the conditions specified in Schedule T for manufacturing Ayurvedic, Siddha and Unani medicines. It requires adequate space, hygienic location, certified raw materials storage, quality control laboratories, batch processing records, and standard reference herbarium samples to ensure authenticity, purity and safety of classical and proprietary Ayurvedic formulations.
