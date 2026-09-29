@@ -25,6 +25,7 @@ from models.schemas import (
 )
 from retrieval.retriever import HybridRetriever
 from retrieval.reranker import CrossEncoderReranker
+from ingestion.embed_and_upsert import get_qdrant_client
 from generation.confidence import compute_confidence
 from generation.llm_client import LLMClient
 from classification import classify_formulation
@@ -36,8 +37,10 @@ app = FastAPI(
     description="Multilingual, source-cited RAG assistant for Ayurveda IP & regulatory guidance."
 )
 
-# Global pipeline singletons
-retriever = HybridRetriever()
+# Global pipeline singletons.  Pass the configured Qdrant client to the
+# retriever so production queries use the ingested vector collection rather
+# than always falling back to the on-disk development corpus.
+retriever = HybridRetriever(get_qdrant_client())
 reranker = CrossEncoderReranker()
 llm_client = LLMClient()
 
