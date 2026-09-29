@@ -3,11 +3,14 @@ Reranker: Cross-encoder reranker (BGE-reranker-v2-m3 via hosted API) returning t
 """
 import re
 import math
+import logging
 import collections
 from typing import List, Dict, Any, Tuple
-import httpx
 
+from http_client import post_with_retry
 from config import settings
+
+logger = logging.getLogger(__name__)
 
 
 class CrossEncoderReranker:
@@ -137,34 +140,28 @@ class CrossEncoderReranker:
 
         # Try remote BGE-reranker API if configured
         if self.api_key:
-            try:
-                documents = [c["child_text"] for c in chunks]
-                async with httpx.AsyncClient(timeout=20.0) as client:
-                    response = await client.post(
-                        self.api_url,
-                        headers={
-                            "Authorization": f"Bearer {self.api_key}",
-                            "Content-Type": "application/json"
-                        },
-                        json={
-                            "model": self.model,
-                            "query": query,
-                            "documents": documents,
-                            "top_n": top_n
-                        }
-                    )
-                    if response.status_code == 200:
-                        data = response.json()
-                        reranked_results = []
-                        for res in data.get("results", []):
-                            idx = res["index"]
-                            score = float(res["relevance_score"])
-                            chunk_copy = dict(chunks[idx])
-                            chunk_copy["rerank_score"] = round(score, 4)
-                            reranked_results.append(chunk_copy)
-                        return reranked_results[:top_n]
-            except Exception as e:
-                print(f"[Notice] Remote reranker API fallback: {e}")
+            documents = [c["child_text"] for c in chunks]
+            headers = {
+                "Authorization": f"Bearer {self.api_key}",
+                "Content-Type": "application/json",
+            }
+            payload = {
+                "model": self.model,
+                "query": query,
+                "documents": documents,
+                "top_n": top_n,
+            }
+            data = await post_with_retry(self.api_url, payload, headers=headers, timeout=20.0)
+            if data:
+                reranked_results = []
+                for res in data.get("results", []):
+                    idx = res["index"]
+                    score = float(res["relevance_score"])
+                    chunk_copy = dict(chunks[idx])
+                    chunk_copy["rerank_score"] = round(score, 4)
+                    reranked_results.append(chunk_copy)
+                return reranked_results[:top_n]
+            logger.info("[Reranker] Remote API unavailable — using local cross-scoring.")
 
         # Local cross-scoring
         scored_chunks = []

@@ -4,9 +4,13 @@ Validates output with Pydantic, filters out hallucinated chunk IDs, and applies 
 """
 import json
 import re
+import logging
 from typing import List, Dict, Any, Optional
-import httpx
 from pydantic import ValidationError
+
+from http_client import post_with_retry
+
+logger = logging.getLogger(__name__)
 
 from config import settings
 from models.schemas import QueryResponse, Citation
@@ -73,7 +77,7 @@ class LLMClient:
         return indexed_citations
 
     async def _call_gemini_api(self, prompt: str) -> Optional[Dict[str, Any]]:
-        """Invokes Gemini 1.5 Flash using structured JSON response schema."""
+        """Invokes Gemini 1.5 Flash using structured JSON response schema (with retry)."""
         if not self.gemini_api_key:
             return None
 
@@ -92,20 +96,17 @@ class LLMClient:
             }
         }
 
-        try:
-            async with httpx.AsyncClient(timeout=30.0) as client:
-                res = await client.post(url, json=payload)
-                if res.status_code == 200:
-                    data = res.json()
-                    text = data["candidates"][0]["content"]["parts"][0]["text"]
-                    return json.loads(text)
-        except Exception as e:
-            print(f"[Warning] Gemini API call failed: {e}")
-
+        data = await post_with_retry(url, payload)
+        if data:
+            try:
+                text = data["candidates"][0]["content"]["parts"][0]["text"]
+                return json.loads(text)
+            except (KeyError, json.JSONDecodeError) as exc:
+                logger.warning("Gemini response parse failed: %s", exc)
         return None
 
     async def _call_anthropic_api(self, prompt: str) -> Optional[Dict[str, Any]]:
-        """Invokes Anthropic Claude API using JSON mode."""
+        """Invokes Anthropic Claude API using JSON mode (with retry)."""
         if not self.anthropic_api_key:
             return None
 
@@ -119,27 +120,21 @@ class LLMClient:
                 {"role": "user", "content": prompt}
             ]
         }
+        headers = {
+            "x-api-key": self.anthropic_api_key,
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+        }
 
-        try:
-            async with httpx.AsyncClient(timeout=30.0) as client:
-                res = await client.post(
-                    url,
-                    headers={
-                        "x-api-key": self.anthropic_api_key,
-                        "anthropic-version": "2023-06-01",
-                        "content-type": "application/json"
-                    },
-                    json=payload
-                )
-                if res.status_code == 200:
-                    data = res.json()
-                    text = data["content"][0]["text"]
-                    json_match = re.search(r"\{.*\}", text, re.DOTALL)
-                    if json_match:
-                        return json.loads(json_match.group(0))
-        except Exception as e:
-            print(f"[Warning] Anthropic API call failed: {e}")
-
+        data = await post_with_retry(url, payload, headers=headers)
+        if data:
+            try:
+                text = data["content"][0]["text"]
+                json_match = re.search(r"\{.*\}", text, re.DOTALL)
+                if json_match:
+                    return json.loads(json_match.group(0))
+            except (KeyError, json.JSONDecodeError) as exc:
+                logger.warning("Anthropic response parse failed: %s", exc)
         return None
 
     def _generate_grounded_fallback(

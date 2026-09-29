@@ -78,7 +78,7 @@ Also build: Home page with nav tabs (Home / Product Assessment / Ask IP-SAKTI /
 Knowledge Sources / About), the Product Assessment form + result view wired to
 /classify, the Knowledge Sources table reading metadata.csv, and a Bhashini call for
 the Hindi toggle — attempt the real Bhashini API first; on failure, fall back silently
-to the existing LLM-native Hindi generation. Log which path was used for demo debugging.
+to the existing LLM-native Hindi generation. Log which path was used for demo debugging.(where the ask IP-SAKTI is the current chat UI which we have)
 
 ## Phase 5 — Hardening and deploy
 - Add caching for the demo questions in `backend/cache.py`.

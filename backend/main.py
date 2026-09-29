@@ -8,7 +8,8 @@ import json
 import asyncio
 import re
 from typing import AsyncGenerator
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 
@@ -28,7 +29,7 @@ from generation.confidence import compute_confidence
 from generation.llm_client import LLMClient
 from classification import classify_formulation
 from profiles import get_profile
-from cache import get_cached_response, set_cached_response
+from cache import get_cached_response, set_cached_response, make_cache_key, get_stats as cache_stats
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -81,7 +82,7 @@ async def sse_pipeline_generator(request: QueryRequest) -> AsyncGenerator[str, N
     6. Stream tokens via SSE then yield final payload
     """
     profile_data = get_profile(request.profile_id) if request.profile_id else None
-    cache_key = f"{request.question.strip().lower()}__jur_{request.jurisdiction}__lang_{request.lang}__prof_{request.profile_id or 'none'}"
+    cache_key = make_cache_key(request.question, request.jurisdiction, request.lang, request.profile_id)
     cached_data = get_cached_response(cache_key)
 
     if cached_data:
@@ -123,7 +124,7 @@ async def sse_pipeline_generator(request: QueryRequest) -> AsyncGenerator[str, N
         )
 
         # Cache response
-        set_cached_response(cache_key, final_response.model_dump())
+        set_cached_response(cache_key, final_response.model_dump(), question=request.question)
 
     # Step 5: SSE Streaming
     # Stream prose answer tokens
@@ -153,3 +154,9 @@ async def query_endpoint(request: QueryRequest):
             "X-Accel-Buffering": "no"
         }
     )
+
+
+@app.get("/cache/stats")
+async def cache_stats_endpoint():
+    """Diagnostic: return in-memory cache hit/miss/size counters."""
+    return JSONResponse(content=cache_stats())
